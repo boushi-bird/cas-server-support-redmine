@@ -94,6 +94,7 @@ public class RedmineAuthenticationHandler extends
 	}
 
 	public void setDataSource(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 		this.dataSource = dataSource;
 	}
 
