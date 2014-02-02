@@ -23,10 +23,10 @@ unzip cas-server-webapp-x.x.x.war -d cas
 下記の4つのライブラリを
 $TOMCAT_HOME/webapps/cas/WEB-INF/lib にコピーします
 
-cas-server-support-jdbc-x.x.x.jar
-commons-dbcp-1.4.jar
-commons-pool-1.6.jar
-mysql-connector-java-x.x.x.jar
+* cas-server-support-jdbc-x.x.x.jar
+* commons-dbcp-1.4.jar
+* commons-pool-1.6.jar
+* mysql-connector-java-x.x.x.jar
 
 cas-server-support-jdbc-x.x.x.jarは
 cas-server-webapp-x.x.x.warがあったディレクトリにあります。
