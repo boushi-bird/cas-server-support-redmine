@@ -24,7 +24,12 @@ public class RedmineAuthenticationHandler extends
 	private static final String COL_SALT = "salt";
 	private static final String COL_HASHED_PASSWORD = "hashed_password";
 
+	private static final String SQL_UPDATE_LAST_LOGIN_ON = "update users set last_login_on = now()"
+			+ WHERE;
+
 	private boolean useSalt;
+
+	private boolean updateLastLoginOn;
 
 	@NotNull
 	private JdbcTemplate jdbcTemplate;
@@ -34,6 +39,7 @@ public class RedmineAuthenticationHandler extends
 
 	public RedmineAuthenticationHandler() {
 		this.useSalt = true;
+		this.updateLastLoginOn = false;
 		this.setPasswordEncoder(new DefaultPasswordEncoder("SHA"));
 	}
 
@@ -46,11 +52,18 @@ public class RedmineAuthenticationHandler extends
 		final String password = credentials.getPassword();
 		final String encryptedPassword = this.getPasswordEncoder().encode(
 				password);
+		final boolean authenticated;
 		if (this.useSalt) {
-			return this.authenticateWithSalt(username, encryptedPassword);
+			authenticated = this.authenticateWithSalt(username,
+					encryptedPassword);
 		} else {
-			return this.authenticateWithoutSalt(username, encryptedPassword);
+			authenticated = this.authenticateWithoutSalt(username,
+					encryptedPassword);
 		}
+		if (this.updateLastLoginOn) {
+			this.doUpdateLastLoginOn(username);
+		}
+		return authenticated;
 	}
 
 	private boolean authenticateWithSalt(final String username,
@@ -85,12 +98,24 @@ public class RedmineAuthenticationHandler extends
 		return hashedPassword.equals(encryptedPassword);
 	}
 
-	private Map<String, Object> query(final String sql, final String username) {
-		return getJdbcTemplate().queryForMap(sql, username);
+	private void doUpdateLastLoginOn(final String username) {
+		this.update(SQL_UPDATE_LAST_LOGIN_ON, username);
+	}
+
+	private Map<String, Object> query(final String sql, final Object... args) {
+		return getJdbcTemplate().queryForMap(sql, args);
+	}
+
+	private int update(final String sql, final Object... args) {
+		return getJdbcTemplate().update(sql, args);
 	}
 
 	public final void setUseSalt(boolean useSalt) {
 		this.useSalt = useSalt;
+	}
+
+	public void setUpdateLastLoginOn(boolean updateLastLoginOn) {
+		this.updateLastLoginOn = updateLastLoginOn;
 	}
 
 	public void setDataSource(DataSource dataSource) {
