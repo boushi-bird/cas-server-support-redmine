@@ -60,7 +60,7 @@ public class RedmineAuthenticationHandler extends
 			authenticated = this.authenticateWithoutSalt(username,
 					encryptedPassword);
 		}
-		if (this.updateLastLoginOn) {
+		if (this.updateLastLoginOn && authenticated) {
 			this.doUpdateLastLoginOn(username);
 		}
 		return authenticated;
