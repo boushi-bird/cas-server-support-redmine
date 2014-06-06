@@ -33,10 +33,10 @@ public class RedminePersonAttributeDao extends SingleRowJdbcPersonAttributeDao {
 		queryAttributeMapping.put(ATTRIBUTE_USERNAME, COL_LOGIN);
 		this.setQueryAttributeMapping(queryAttributeMapping);
 		final Map<String, Object> resultAttributeMapping = new LinkedHashMap<String, Object>();
-		queryAttributeMapping.put(COL_MAIL, COL_MAIL);
-		queryAttributeMapping.put(COL_FIRSTNAME, COL_FIRSTNAME);
-		queryAttributeMapping.put(COL_LASTNAME, COL_LASTNAME);
-		queryAttributeMapping.put(COL_USERNAME, COL_USERNAME);
+		resultAttributeMapping.put(COL_MAIL, COL_MAIL);
+		resultAttributeMapping.put(COL_FIRSTNAME, COL_FIRSTNAME);
+		resultAttributeMapping.put(COL_LASTNAME, COL_LASTNAME);
+		resultAttributeMapping.put(COL_USERNAME, COL_USERNAME);
 		this.setResultAttributeMapping(resultAttributeMapping);
 	}
 
